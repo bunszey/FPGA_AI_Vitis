@@ -1,0 +1,324 @@
+22:37:58 INFO  : Launching XSCT server: xsct -n  -interactive /home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/temp_xsdb_launch_script.tcl
+22:37:59 INFO  : Registering command handlers for Vitis TCF services
+22:38:02 INFO  : Platform repository initialization has completed.
+22:38:02 INFO  : XSCT server has started successfully.
+22:38:02 INFO  : Successfully done setting XSCT server connection channel  
+22:38:03 INFO  : plnx-install-location is set to ''
+22:38:03 INFO  : Successfully done setting workspace for the tool. 
+22:38:03 INFO  : Successfully done query RDI_DATADIR 
+22:39:50 INFO  : Result from executing command 'getProjects': platform_proj
+22:39:50 INFO  : Result from executing command 'getPlatforms': 
+22:45:59 INFO  : Result from executing command 'getProjects': platform_proj
+22:45:59 INFO  : Result from executing command 'getPlatforms': platform_proj|/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/platform_proj/export/platform_proj/platform_proj.xpfm
+22:46:02 INFO  : Checking for BSP changes to sync application flags for project 'app_proj'...
+22:46:09 INFO  : Updating application flags with new BSP settings...
+22:46:09 INFO  : Successfully updated application flags for project app_proj.
+22:46:14 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+22:46:14 INFO  : Jtag cable 'Avnet USB-to-JTAG/UART Pod V1 1234-oj1A' is selected.
+22:46:14 INFO  : 'jtag frequency' command is executed.
+22:46:14 INFO  : Sourcing of '/tools/Xilinx/Vitis/2020.2/scripts/vitis/util/zynqmp_utils.tcl' is done.
+22:46:14 INFO  : Context for 'APU' is selected.
+22:46:15 INFO  : System reset is completed.
+22:46:18 INFO  : 'after 3000' command is executed.
+22:46:19 INFO  : 'targets -set -filter {jtag_cable_name =~ "Avnet USB-to-JTAG/UART Pod V1 1234-oj1A" && level==0 && jtag_device_ctx=="jsn-USB-to-JTAG/UART Pod V1-1234-oj1A-14710093-0"}' command is executed.
+22:46:22 INFO  : Device configured successfully with "/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/app_proj/_ide/bitstream/u96v2_sbc_mp4d_wrapper.bit"
+22:46:22 INFO  : Context for 'APU' is selected.
+22:46:22 INFO  : Hardware design and registers information is loaded from '/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/platform_proj/export/platform_proj/hw/u96v2_sbc_mp4d_wrapper.xsa'.
+22:46:22 INFO  : 'configparams force-mem-access 1' command is executed.
+22:46:22 INFO  : Context for 'APU' is selected.
+22:46:22 INFO  : Boot mode is read from the target.
+22:46:22 INFO  : Context for processor 'psu_cortexa53_0' is selected.
+22:46:22 INFO  : Processor reset is completed for 'psu_cortexa53_0'.
+22:46:23 INFO  : The application '/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/platform_proj/export/platform_proj/sw/platform_proj/boot/fsbl.elf' is downloaded to processor 'psu_cortexa53_0'.
+22:46:23 INFO  : 'set bp_46_23_fsbl_bp [bpadd -addr &XFsbl_Exit]' command is executed.
+22:46:24 INFO  : 'con -block -timeout 60' command is executed.
+22:46:24 INFO  : 'bpremove $bp_46_23_fsbl_bp' command is executed.
+22:46:24 INFO  : Context for processor 'psu_cortexa53_0' is selected.
+22:46:24 INFO  : Processor reset is completed for 'psu_cortexa53_0'.
+22:46:25 INFO  : The application '/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/app_proj/Debug/app_proj.elf' is downloaded to processor 'psu_cortexa53_0'.
+22:46:25 INFO  : 'configparams force-mem-access 0' command is executed.
+22:46:25 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+source /tools/Xilinx/Vitis/2020.2/scripts/vitis/util/zynqmp_utils.tcl
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Avnet USB-to-JTAG/UART Pod V1 1234-oj1A" && level==0 && jtag_device_ctx=="jsn-USB-to-JTAG/UART Pod V1-1234-oj1A-14710093-0"}
+fpga -file /home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/app_proj/_ide/bitstream/u96v2_sbc_mp4d_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw /home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/platform_proj/export/platform_proj/hw/u96v2_sbc_mp4d_wrapper.xsa -mem-ranges [list {0x80000000 0xbfffffff} {0x400000000 0x5ffffffff} {0x1000000000 0x7fffffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+set mode [expr [mrd -value 0xFF5E0200] & 0xf]
+targets -set -nocase -filter {name =~ "*A53*#0"}
+rst -processor
+dow /home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/platform_proj/export/platform_proj/sw/platform_proj/boot/fsbl.elf
+set bp_46_23_fsbl_bp [bpadd -addr &XFsbl_Exit]
+con -block -timeout 60
+bpremove $bp_46_23_fsbl_bp
+targets -set -nocase -filter {name =~ "*A53*#0"}
+rst -processor
+dow /home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/app_proj/Debug/app_proj.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+22:46:25 INFO  : Context for processor 'psu_cortexa53_0' is selected.
+22:46:25 INFO  : 'con' command is executed.
+22:46:25 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A53*#0"}
+con
+----------------End of Script----------------
+
+22:46:25 INFO  : Launch script is exported to file '/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/app_proj_system/_ide/scripts/debugger_app_proj-default.tcl'
+23:33:59 INFO  : Disconnected from the channel tcfchan#2.
+23:34:00 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+23:34:00 INFO  : Jtag cable 'Avnet USB-to-JTAG/UART Pod V1 1234-oj1A' is selected.
+23:34:00 INFO  : 'jtag frequency' command is executed.
+23:34:00 INFO  : Sourcing of '/tools/Xilinx/Vitis/2020.2/scripts/vitis/util/zynqmp_utils.tcl' is done.
+23:34:00 INFO  : Context for 'APU' is selected.
+23:34:01 INFO  : System reset is completed.
+23:34:04 INFO  : 'after 3000' command is executed.
+23:34:04 INFO  : 'targets -set -filter {jtag_cable_name =~ "Avnet USB-to-JTAG/UART Pod V1 1234-oj1A" && level==0 && jtag_device_ctx=="jsn-USB-to-JTAG/UART Pod V1-1234-oj1A-14710093-0"}' command is executed.
+23:34:07 INFO  : Device configured successfully with "/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/app_proj/_ide/bitstream/u96v2_sbc_mp4d_wrapper.bit"
+23:34:07 INFO  : Context for 'APU' is selected.
+23:34:07 INFO  : Hardware design and registers information is loaded from '/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/platform_proj/export/platform_proj/hw/u96v2_sbc_mp4d_wrapper.xsa'.
+23:34:07 INFO  : 'configparams force-mem-access 1' command is executed.
+23:34:07 INFO  : Context for 'APU' is selected.
+23:34:07 INFO  : Boot mode is read from the target.
+23:34:07 INFO  : Context for processor 'psu_cortexa53_0' is selected.
+23:34:07 INFO  : Processor reset is completed for 'psu_cortexa53_0'.
+23:34:08 INFO  : The application '/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/platform_proj/export/platform_proj/sw/platform_proj/boot/fsbl.elf' is downloaded to processor 'psu_cortexa53_0'.
+23:34:08 INFO  : 'set bp_34_8_fsbl_bp [bpadd -addr &XFsbl_Exit]' command is executed.
+23:34:08 INFO  : 'con -block -timeout 60' command is executed.
+23:34:08 INFO  : 'bpremove $bp_34_8_fsbl_bp' command is executed.
+23:34:08 INFO  : Context for processor 'psu_cortexa53_0' is selected.
+23:34:08 INFO  : Processor reset is completed for 'psu_cortexa53_0'.
+23:34:09 INFO  : The application '/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/app_proj/Debug/app_proj.elf' is downloaded to processor 'psu_cortexa53_0'.
+23:34:09 INFO  : 'configparams force-mem-access 0' command is executed.
+23:34:09 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+source /tools/Xilinx/Vitis/2020.2/scripts/vitis/util/zynqmp_utils.tcl
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Avnet USB-to-JTAG/UART Pod V1 1234-oj1A" && level==0 && jtag_device_ctx=="jsn-USB-to-JTAG/UART Pod V1-1234-oj1A-14710093-0"}
+fpga -file /home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/app_proj/_ide/bitstream/u96v2_sbc_mp4d_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw /home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/platform_proj/export/platform_proj/hw/u96v2_sbc_mp4d_wrapper.xsa -mem-ranges [list {0x80000000 0xbfffffff} {0x400000000 0x5ffffffff} {0x1000000000 0x7fffffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+set mode [expr [mrd -value 0xFF5E0200] & 0xf]
+targets -set -nocase -filter {name =~ "*A53*#0"}
+rst -processor
+dow /home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/platform_proj/export/platform_proj/sw/platform_proj/boot/fsbl.elf
+set bp_34_8_fsbl_bp [bpadd -addr &XFsbl_Exit]
+con -block -timeout 60
+bpremove $bp_34_8_fsbl_bp
+targets -set -nocase -filter {name =~ "*A53*#0"}
+rst -processor
+dow /home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/app_proj/Debug/app_proj.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+23:34:09 INFO  : Context for processor 'psu_cortexa53_0' is selected.
+23:34:09 INFO  : 'con' command is executed.
+23:34:09 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A53*#0"}
+con
+----------------End of Script----------------
+
+23:34:09 INFO  : Launch script is exported to file '/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/app_proj_system/_ide/scripts/debugger_app_proj-default.tcl'
+23:34:26 INFO  : Checking for BSP changes to sync application flags for project 'app_proj'...
+23:34:42 INFO  : Disconnected from the channel tcfchan#3.
+23:34:43 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+23:34:43 INFO  : Jtag cable 'Avnet USB-to-JTAG/UART Pod V1 1234-oj1A' is selected.
+23:34:43 INFO  : 'jtag frequency' command is executed.
+23:34:43 INFO  : Sourcing of '/tools/Xilinx/Vitis/2020.2/scripts/vitis/util/zynqmp_utils.tcl' is done.
+23:34:43 INFO  : Context for 'APU' is selected.
+23:34:44 INFO  : System reset is completed.
+23:34:47 INFO  : 'after 3000' command is executed.
+23:34:47 INFO  : 'targets -set -filter {jtag_cable_name =~ "Avnet USB-to-JTAG/UART Pod V1 1234-oj1A" && level==0 && jtag_device_ctx=="jsn-USB-to-JTAG/UART Pod V1-1234-oj1A-14710093-0"}' command is executed.
+23:34:50 INFO  : Device configured successfully with "/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/app_proj/_ide/bitstream/u96v2_sbc_mp4d_wrapper.bit"
+23:34:50 INFO  : Context for 'APU' is selected.
+23:34:50 INFO  : Hardware design and registers information is loaded from '/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/platform_proj/export/platform_proj/hw/u96v2_sbc_mp4d_wrapper.xsa'.
+23:34:50 INFO  : 'configparams force-mem-access 1' command is executed.
+23:34:50 INFO  : Context for 'APU' is selected.
+23:34:50 INFO  : Boot mode is read from the target.
+23:34:50 INFO  : Context for processor 'psu_cortexa53_0' is selected.
+23:34:50 INFO  : Processor reset is completed for 'psu_cortexa53_0'.
+23:34:51 INFO  : The application '/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/platform_proj/export/platform_proj/sw/platform_proj/boot/fsbl.elf' is downloaded to processor 'psu_cortexa53_0'.
+23:34:51 INFO  : 'set bp_34_51_fsbl_bp [bpadd -addr &XFsbl_Exit]' command is executed.
+23:34:52 INFO  : 'con -block -timeout 60' command is executed.
+23:34:52 INFO  : 'bpremove $bp_34_51_fsbl_bp' command is executed.
+23:34:52 INFO  : Context for processor 'psu_cortexa53_0' is selected.
+23:34:52 INFO  : Processor reset is completed for 'psu_cortexa53_0'.
+23:34:52 INFO  : The application '/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/app_proj/Debug/app_proj.elf' is downloaded to processor 'psu_cortexa53_0'.
+23:34:52 INFO  : 'configparams force-mem-access 0' command is executed.
+23:34:52 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+source /tools/Xilinx/Vitis/2020.2/scripts/vitis/util/zynqmp_utils.tcl
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Avnet USB-to-JTAG/UART Pod V1 1234-oj1A" && level==0 && jtag_device_ctx=="jsn-USB-to-JTAG/UART Pod V1-1234-oj1A-14710093-0"}
+fpga -file /home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/app_proj/_ide/bitstream/u96v2_sbc_mp4d_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw /home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/platform_proj/export/platform_proj/hw/u96v2_sbc_mp4d_wrapper.xsa -mem-ranges [list {0x80000000 0xbfffffff} {0x400000000 0x5ffffffff} {0x1000000000 0x7fffffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+set mode [expr [mrd -value 0xFF5E0200] & 0xf]
+targets -set -nocase -filter {name =~ "*A53*#0"}
+rst -processor
+dow /home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/platform_proj/export/platform_proj/sw/platform_proj/boot/fsbl.elf
+set bp_34_51_fsbl_bp [bpadd -addr &XFsbl_Exit]
+con -block -timeout 60
+bpremove $bp_34_51_fsbl_bp
+targets -set -nocase -filter {name =~ "*A53*#0"}
+rst -processor
+dow /home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/app_proj/Debug/app_proj.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+23:34:52 INFO  : Context for processor 'psu_cortexa53_0' is selected.
+23:34:53 INFO  : 'con' command is executed.
+23:34:53 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A53*#0"}
+con
+----------------End of Script----------------
+
+23:34:53 INFO  : Launch script is exported to file '/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/app_proj_system/_ide/scripts/debugger_app_proj-default.tcl'
+23:37:19 INFO  : Checking for BSP changes to sync application flags for project 'app_proj'...
+23:37:27 INFO  : Disconnected from the channel tcfchan#4.
+23:37:28 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+23:37:28 INFO  : Jtag cable 'Avnet USB-to-JTAG/UART Pod V1 1234-oj1A' is selected.
+23:37:28 INFO  : 'jtag frequency' command is executed.
+23:37:28 INFO  : Sourcing of '/tools/Xilinx/Vitis/2020.2/scripts/vitis/util/zynqmp_utils.tcl' is done.
+23:37:28 INFO  : Context for 'APU' is selected.
+23:37:29 INFO  : System reset is completed.
+23:37:32 INFO  : 'after 3000' command is executed.
+23:37:32 INFO  : 'targets -set -filter {jtag_cable_name =~ "Avnet USB-to-JTAG/UART Pod V1 1234-oj1A" && level==0 && jtag_device_ctx=="jsn-USB-to-JTAG/UART Pod V1-1234-oj1A-14710093-0"}' command is executed.
+23:37:35 INFO  : Device configured successfully with "/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/app_proj/_ide/bitstream/u96v2_sbc_mp4d_wrapper.bit"
+23:37:35 INFO  : Context for 'APU' is selected.
+23:37:35 INFO  : Hardware design and registers information is loaded from '/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/platform_proj/export/platform_proj/hw/u96v2_sbc_mp4d_wrapper.xsa'.
+23:37:35 INFO  : 'configparams force-mem-access 1' command is executed.
+23:37:35 INFO  : Context for 'APU' is selected.
+23:37:35 INFO  : Boot mode is read from the target.
+23:37:35 INFO  : Context for processor 'psu_cortexa53_0' is selected.
+23:37:35 INFO  : Processor reset is completed for 'psu_cortexa53_0'.
+23:37:36 INFO  : The application '/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/platform_proj/export/platform_proj/sw/platform_proj/boot/fsbl.elf' is downloaded to processor 'psu_cortexa53_0'.
+23:37:36 INFO  : 'set bp_37_36_fsbl_bp [bpadd -addr &XFsbl_Exit]' command is executed.
+23:37:36 INFO  : 'con -block -timeout 60' command is executed.
+23:37:36 INFO  : 'bpremove $bp_37_36_fsbl_bp' command is executed.
+23:37:36 INFO  : Context for processor 'psu_cortexa53_0' is selected.
+23:37:36 INFO  : Processor reset is completed for 'psu_cortexa53_0'.
+23:37:37 INFO  : The application '/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/app_proj/Debug/app_proj.elf' is downloaded to processor 'psu_cortexa53_0'.
+23:37:37 INFO  : 'configparams force-mem-access 0' command is executed.
+23:37:37 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+source /tools/Xilinx/Vitis/2020.2/scripts/vitis/util/zynqmp_utils.tcl
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Avnet USB-to-JTAG/UART Pod V1 1234-oj1A" && level==0 && jtag_device_ctx=="jsn-USB-to-JTAG/UART Pod V1-1234-oj1A-14710093-0"}
+fpga -file /home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/app_proj/_ide/bitstream/u96v2_sbc_mp4d_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw /home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/platform_proj/export/platform_proj/hw/u96v2_sbc_mp4d_wrapper.xsa -mem-ranges [list {0x80000000 0xbfffffff} {0x400000000 0x5ffffffff} {0x1000000000 0x7fffffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+set mode [expr [mrd -value 0xFF5E0200] & 0xf]
+targets -set -nocase -filter {name =~ "*A53*#0"}
+rst -processor
+dow /home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/platform_proj/export/platform_proj/sw/platform_proj/boot/fsbl.elf
+set bp_37_36_fsbl_bp [bpadd -addr &XFsbl_Exit]
+con -block -timeout 60
+bpremove $bp_37_36_fsbl_bp
+targets -set -nocase -filter {name =~ "*A53*#0"}
+rst -processor
+dow /home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/app_proj/Debug/app_proj.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+23:37:37 INFO  : Context for processor 'psu_cortexa53_0' is selected.
+23:37:37 INFO  : 'con' command is executed.
+23:37:37 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A53*#0"}
+con
+----------------End of Script----------------
+
+23:37:37 INFO  : Launch script is exported to file '/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/app_proj_system/_ide/scripts/debugger_app_proj-default.tcl'
+00:16:19 INFO  : Hardware specification for platform project 'platform_proj' is updated.
+00:17:19 INFO  : Result from executing command 'getProjects': platform_proj
+00:17:19 INFO  : Result from executing command 'getPlatforms': platform_proj|/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/platform_proj/export/platform_proj/platform_proj.xpfm
+00:17:23 INFO  : Checking for BSP changes to sync application flags for project 'app_proj'...
+00:17:41 INFO  : Checking for BSP changes to sync application flags for project 'app_proj'...
+00:17:57 INFO  : Disconnected from the channel tcfchan#5.
+00:17:58 INFO  : The hardware specfication used by project 'app_proj' is out of sync with the platform. Resource files extracted from the hardware specfiication will be updated.
+00:17:58 INFO  : The file '/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/app_proj/_ide/bitstream/u96v2_sbc_mp4d_wrapper.bit' stored in project is removed.
+00:17:58 INFO  : The updated bitstream files are copied from platform to folder '/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/app_proj/_ide/bitstream' in project 'app_proj'.
+00:17:58 INFO  : The file '/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/app_proj/_ide/psinit/psu_init.tcl' stored in project is removed.
+00:18:00 INFO  : The updated ps init files are copied from platform to folder '/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/app_proj/_ide/psinit' in project 'app_proj'.
+00:18:01 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+00:18:01 INFO  : Jtag cable 'Avnet USB-to-JTAG/UART Pod V1 1234-oj1A' is selected.
+00:18:01 INFO  : 'jtag frequency' command is executed.
+00:18:01 INFO  : Sourcing of '/tools/Xilinx/Vitis/2020.2/scripts/vitis/util/zynqmp_utils.tcl' is done.
+00:18:01 INFO  : Context for 'APU' is selected.
+00:18:02 INFO  : System reset is completed.
+00:18:05 INFO  : 'after 3000' command is executed.
+00:18:05 INFO  : 'targets -set -filter {jtag_cable_name =~ "Avnet USB-to-JTAG/UART Pod V1 1234-oj1A" && level==0 && jtag_device_ctx=="jsn-USB-to-JTAG/UART Pod V1-1234-oj1A-14710093-0"}' command is executed.
+00:18:08 INFO  : Device configured successfully with "/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/app_proj/_ide/bitstream/u96v2_sbc_mp4d_wrapper.bit"
+00:18:08 INFO  : Context for 'APU' is selected.
+00:18:09 INFO  : Hardware design and registers information is loaded from '/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/platform_proj/export/platform_proj/hw/u96v2_sbc_mp4d_wrapper.xsa'.
+00:18:09 INFO  : 'configparams force-mem-access 1' command is executed.
+00:18:09 INFO  : Context for 'APU' is selected.
+00:18:09 INFO  : Boot mode is read from the target.
+00:18:09 INFO  : Context for processor 'psu_cortexa53_0' is selected.
+00:18:09 INFO  : Processor reset is completed for 'psu_cortexa53_0'.
+00:18:10 INFO  : The application '/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/platform_proj/export/platform_proj/sw/platform_proj/boot/fsbl.elf' is downloaded to processor 'psu_cortexa53_0'.
+00:18:10 INFO  : 'set bp_18_10_fsbl_bp [bpadd -addr &XFsbl_Exit]' command is executed.
+00:18:10 INFO  : 'con -block -timeout 60' command is executed.
+00:18:10 INFO  : 'bpremove $bp_18_10_fsbl_bp' command is executed.
+00:18:10 INFO  : Context for processor 'psu_cortexa53_0' is selected.
+00:18:10 INFO  : Processor reset is completed for 'psu_cortexa53_0'.
+00:18:11 INFO  : The application '/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/app_proj/Debug/app_proj.elf' is downloaded to processor 'psu_cortexa53_0'.
+00:18:11 INFO  : 'configparams force-mem-access 0' command is executed.
+00:18:11 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+source /tools/Xilinx/Vitis/2020.2/scripts/vitis/util/zynqmp_utils.tcl
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Avnet USB-to-JTAG/UART Pod V1 1234-oj1A" && level==0 && jtag_device_ctx=="jsn-USB-to-JTAG/UART Pod V1-1234-oj1A-14710093-0"}
+fpga -file /home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/app_proj/_ide/bitstream/u96v2_sbc_mp4d_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw /home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/platform_proj/export/platform_proj/hw/u96v2_sbc_mp4d_wrapper.xsa -mem-ranges [list {0x80000000 0xbfffffff} {0x400000000 0x5ffffffff} {0x1000000000 0x7fffffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+set mode [expr [mrd -value 0xFF5E0200] & 0xf]
+targets -set -nocase -filter {name =~ "*A53*#0"}
+rst -processor
+dow /home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/platform_proj/export/platform_proj/sw/platform_proj/boot/fsbl.elf
+set bp_18_10_fsbl_bp [bpadd -addr &XFsbl_Exit]
+con -block -timeout 60
+bpremove $bp_18_10_fsbl_bp
+targets -set -nocase -filter {name =~ "*A53*#0"}
+rst -processor
+dow /home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/app_proj/Debug/app_proj.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+00:18:11 INFO  : Context for processor 'psu_cortexa53_0' is selected.
+00:18:11 INFO  : 'con' command is executed.
+00:18:11 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A53*#0"}
+con
+----------------End of Script----------------
+
+00:18:11 INFO  : Launch script is exported to file '/home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/app_proj_system/_ide/scripts/debugger_app_proj-default.tcl'
+12:31:03 INFO  : Launching XSCT server: xsct -n  -interactive /home/lars/Documents/MPsocGroup/embedded_new_final/vitisws/temp_xsdb_launch_script.tcl
+12:31:06 INFO  : XSCT server has started successfully.
+12:31:06 INFO  : plnx-install-location is set to ''
+12:31:06 INFO  : Successfully done setting XSCT server connection channel  
+12:31:06 INFO  : Successfully done setting workspace for the tool. 
+12:31:09 INFO  : Platform repository initialization has completed.
+12:31:09 INFO  : Successfully done query RDI_DATADIR 
+12:31:09 INFO  : Registering command handlers for Vitis TCF services
