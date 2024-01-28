@@ -73,7 +73,7 @@ int main()
 		}
 
 		sleep(0.1);
-		xil_printf("Network output: %u HEYO\n\r", BRAM(1024));
+		xil_printf("Network output: %u\n\r", BRAM(128));
 
     }
 
