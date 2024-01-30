@@ -14,10 +14,6 @@ def main():
 		port = '/dev/ttyUSB1' # default port
 
 	dims = (32,24) # dimensions of images to train/test with
-	randomint = 2
-	while randomint == 2: # choose random test image
-		randomint = random.randrange(5)
-	
 	
 	read_dir = '/data/' # path to test images
 	
